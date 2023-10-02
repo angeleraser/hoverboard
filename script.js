@@ -34,35 +34,21 @@ function removeCellColor(cell) {
   cell.style.boxShadow = `0 0 2px var(--black), 0 0 10px var(--black)`;
 }
 
-function createBoard(element, config) {
-  element.innerHTML = generateBoardCells(config.size);
-  element.style.transitionDuration = `${config.transitionMs}ms`;
-  element.style.gridTemplateColumns = "1fr ".repeat(config.size);
-
-  let hoveredCell = null;
+function createBoard(element, { size, transitionMs }) {
+  element.innerHTML = generateBoardCells(size);
+  element.style.transitionDuration = `${transitionMs}ms`;
+  element.style.gridTemplateColumns = "1fr ".repeat(size);
 
   element.addEventListener("click", function ({ target }) {
     if (target.dataset.cell) addCellColor(target);
   });
 
   element.addEventListener("mouseover", function ({ target }) {
-    if (!target.dataset.cell) return;
-
-    addCellColor(target, config.transitionMs);
-
-    setTimeout(
-      function (prevCell) {
-        if (prevCell && prevCell !== target) removeCellColor(prevCell);
-      },
-      config.transitionMs,
-      hoveredCell
-    );
-
-    hoveredCell = target;
+    if (target.dataset.cell) addCellColor(target, transitionMs);
   });
 
-  element.addEventListener("mouseleave", function () {
-    if (hoveredCell) removeCellColor(hoveredCell);
+  element.addEventListener("mouseout", function ({ target }) {
+    if (target.dataset.cell) setTimeout(removeCellColor, transitionMs, target);
   });
 }
 
