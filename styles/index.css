@@ -56,7 +56,3 @@ html,
   box-shadow: 0 0 2px var(--black), 0 0 10px var(--black);
   transition: inherit;
 }
-
-.board-cell:hover {
-  transform: scale(1.1);
-}
