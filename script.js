@@ -39,14 +39,12 @@ function createBoard(element, { size, transitionMs }) {
   element.style.transitionDuration = `${transitionMs}ms`;
   element.style.gridTemplateColumns = "1fr ".repeat(size);
 
-  element.addEventListener("click", function ({ target }) {
+  function handleAddCellColor({ target }) {
     if (target.dataset.cell) addCellColor(target);
-  });
+  }
 
-  element.addEventListener("mouseover", function ({ target }) {
-    if (target.dataset.cell) addCellColor(target, transitionMs);
-  });
-
+  element.addEventListener("click", handleAddCellColor);
+  element.addEventListener("mouseover", handleAddCellColor);
   element.addEventListener("mouseout", function ({ target }) {
     if (target.dataset.cell) setTimeout(removeCellColor, transitionMs, target);
   });
